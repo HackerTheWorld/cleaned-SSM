@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>老格里知识库</title>
+  <link rel="stylesheet" href="${ctx}/css/knowledge/iconfont.css" />
+  <link rel="stylesheet" href="${ctx}/css/knowledge/ka-web.css" />
+  <script src="${ctx}/js/vue/vue.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <style type="text/css">
+  	.send{
+    	display:none; 
+	}
+	.send_btn:hover .send{
+	    display:block ;
+	}
+  </style>
+</head>
+<body class="">
+
+<div class="kaweb-wrap clearfix">
+  <div class="kaweb-menu" id="menu2">
+    <div class="kaweb-tp-logo" ><img src="../src/images/ka-logo.png" alt=""></div>
+    <ul  v-for="(row,i) in rows">
+	      <li v-bind:class="{'active':ind === i}" v-on:click="create_right_meum(row.knowledge_meum_id,i)">
+	      <span class="menu-icon home"></span> <span>{{row.knowledge_name}}</span></li>
+    </ul>
+    <div class="kaweb-business-review">商业评论</div>
+  </div>
+  <div class="kaweb-main-wrap">
+    <div class="kaweb-submenu" subtitle="主页" id="right_meum">
+      <div class="kaweb-submenu-title" >内容管理</div>
+      <ul  v-for="(row,i) in rows">
+        <li v-bind:class="{'active':ind === i}" v-on:click="getknowledge(row,i)">{{row.knowledge_name}}</li>
+      </ul>
+    </div>
+    <div class="kaweb-main-content">
+    
+      <div class="kaweb-content-tab" id="content_tab">
+        <ul class="pull-left clearfix" v-for="(row,i) in rows">
+          <li v-bind:class="{'active':ind === i}" v-on:click="showwindows(i)">{{row}}</li>
+        </ul>
+        <div class="kaweb-article-head mt10">
+          <input type="text" placeholder="标题关键词" class="textvalue article">
+          <div class="art-operate-pop">
+            <input type="button" value="搜索" class="btn btn-bg-lightgreen size-2 ">
+          </div>
+        </div>
+      </div>
+      
+      <div class="kaweb-content-info ph20 mt20" id="knowledge">
+      
+        <ul class="kaweb-article-list" v-if="type === 'article'">
+          <li v-for="row in rows" class="row clearfix">
+            <div class="col-9">
+              <div class="kaweb-article-detail clearfix">
+                <a href="#" class="title">{{row.knowledge_head}}</a>
+                <span class="type-tag grey b-radius mt2">新零售</span>
+                <span class="type-tag grey b-radius mt2">公开</span>
+              </div>
+              <div class="kaweb-article-detail clearfix">
+                <span class="type-tag light-green">微信图文</span>
+                <span class="type-tag light-red">推荐</span>
+                <span class="pull-left ml20 lh20 text-size-12 text-grey">2017-6-17 15:37</span>
+                <span class="pull-left ml20 lh20 text-size-12 text-grey">已发表</span>
+                <span class="article-icon revise">修改</span>
+                <div class="art-operate-pop">
+                  <a href="#" class="operate">更多操作</a>
+                  <div class="art-operate-hide d-hidden">
+                    <a href="#" class="disabled">推荐</a>
+                    <a href="#">重新发表</a>
+                    <a href="#">删除</a>
+                  </div>
+                </div>
+              </div> 
+              <div class="kaweb-article-detail clearfix">
+                  <span class="text-size-12 text-grey lh20">阅读：123&nbsp;&nbsp;|&nbsp;&nbsp;评论：13&nbsp;&nbsp;|&nbsp;&nbsp;转发：456&nbsp;&nbsp;|&nbsp; &nbsp;收藏：1234</span>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="ka-article-img">
+                <img src="../src/images/img1.png" alt="">
+                <i class="video"></i>
+              </div>
+            </div>
+          </li>
+          
+          
+          
+          <!-- <li class="row clearfix">
+            <div class="col-9">
+              <div class="kaweb-article-detail clearfix">
+                <a href="#" class="title">新演讲 | 实体店翻身要靠经营人</a>
+                <span class="type-tag grey b-radius mt2">新零售</span>
+                <span class="type-tag grey b-radius mt2">公开</span>
+              </div>
+              <div class="kaweb-article-detail clearfix">
+                <span class="type-tag light-green">微信图文</span>
+                <span class="pull-left ml20 lh20 text-size-12 text-grey">2017-6-17 15:37</span>
+                <span class="pull-left ml20 lh20 text-size-12 text-grey">已发表</span>
+                <span class="article-icon revise">修改</span>
+                <div class="art-operate-pop">
+                  <a href="#" class="operate">更多操作</a>
+                  <div class="art-operate-hide d-hidden">
+                    <a href="#" class="disabled">推荐</a>
+                    <a href="#">重新发表</a>
+                    <a href="#">删除</a>
+                  </div>
+                </div>
+              </div>
+              <div class="kaweb-article-detail clearfix">
+                <span class="text-size-12 text-grey lh20">阅读：123&nbsp;&nbsp;|&nbsp;&nbsp;评论：13&nbsp;&nbsp;|&nbsp;&nbsp;转发：456&nbsp;&nbsp;|&nbsp; &nbsp;收藏：1234</span>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="ka-article-img">
+                <img src="../src/images/img1.png" alt="">
+                <i class="video"></i>
+              </div>
+            </div>
+          </li>
+          
+          <li class="row clearfix">
+            <div class="col-9">
+              <div class="kaweb-article-detail clearfix">
+                <a href="#" class="title">麦肯锡：中国消费市场四大趋势中国消费市场四大趋势中国消费市场四大趋势</a>
+                <span class="type-tag grey b-radius mt2">新零售</span>
+                <span class="type-tag grey b-radius mt2">公开</span>
+              </div>
+              <div class="kaweb-article-detail clearfix">
+                <span class="type-tag green">案例</span>
+                <span class="pull-left ml20 lh20 text-size-12 text-grey">2017-6-17 15:37</span>
+                <span class="pull-left ml20 lh20 text-size-12 text-grey">草稿</span>
+              </div>
+              <div class="kaweb-article-detail clearfix">
+                <span class="article-icon revise no-margin">修改</span>
+                <span class="article-icon comment">专家点评(4)</span>
+                <span class="article-icon del">删除</span>
+              </div>
+            </div> 
+            <div class="col-3">
+              <div class="ka-article-img">
+                <img src="../src/images/img1.png" alt="">
+                <i class="video"></i>
+              </div>
+            </div>
+          </li>
+          
+          <li class="row clearfix">
+            <div class="col-9">
+              <div class="kaweb-article-detail clearfix">
+                <a href="#" class="title">零售：什么走线上，什么走线下，什么走线上，什么走线下</a>
+                <span class="type-tag grey b-radius mt2">新零售</span>
+                <span class="type-tag grey b-radius mt2">公开</span>
+              </div>
+              <div class="kaweb-article-detail clearfix">
+                <span class="type-tag orange">短视频</span>
+                <span class="pull-left ml20 lh20 text-size-12 text-grey">2017-6-17 15:37</span>
+                <span class="pull-left ml20 lh20 text-size-12 text-grey">已发表</span>
+                <span class="article-icon revise">修改</span>
+                <div class="art-operate-pop">
+                  <a href="#" class="operate">更多操作</a>
+                  <div class="art-operate-hide d-hidden">
+                    <a href="#" class="disabled">推荐</a>
+                    <a href="#">重新发表</a>
+                    <a href="#">删除</a>
+                  </div>
+                </div>
+              </div>
+              <div class="kaweb-article-detail clearfix">
+                <span class="text-size-12 text-grey lh20">阅读：123&nbsp;&nbsp;|&nbsp;&nbsp;评论：13&nbsp;&nbsp;|&nbsp;&nbsp;转发：456&nbsp;&nbsp;|&nbsp; &nbsp;收藏：1234</span>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="ka-article-img">
+                <img src="../src/images/img1.png" alt="">
+                <i class="video"></i>
+              </div>
+            </div>
+          </li> -->
+          
+        </ul> 
+       </div> 
+ 
+    </div>
+  </div>
+</div>
+</body>
+	<script type="text/javascript" src="${ctx}/js/knowledge/knowledge.js"></script>
+</html>
